@@ -1,4 +1,5 @@
 import Ajv from "ajv";
+import { errorHandler } from "../utils/response.js";
 const ajv = new Ajv();
 
 
@@ -7,9 +8,7 @@ const validation = (schema) => {
         const validate = ajv.compile(schema);
         const valid = validate(req.body);
         if (!valid) {
-            return res.status(400).json({
-                error: validate.errors
-            });
+            next(errorHandler(400, validate.errors))
         } else {
             next();
         }

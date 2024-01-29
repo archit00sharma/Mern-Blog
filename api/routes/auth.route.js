@@ -1,5 +1,5 @@
 import express from 'express';
-import { ajvValidations } from '../../helpers/ajv.js'
+import { ajvValidations } from '../helpers/ajv.js'
 import { signup } from '../controllers/auth.controller.js';
 
 const router = express.Router();
