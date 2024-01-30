@@ -33,7 +33,9 @@ export const signin = async (req, res, next) => {
         const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
         res.cookie('Mern_Blog', token, { maxAge: 900000, httpOnly: true });
 
-        responseHandler(res, 201, 'User LoggedIn Successfully', {})
+        delete user.password;
+
+        responseHandler(res, 201, 'User LoggedIn Successfully', user)
     } catch (error) {
         next(error)
     };
