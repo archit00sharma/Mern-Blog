@@ -15,7 +15,6 @@ const validation = (schema) => {
     };
 };
 
-
 const signupSchema = {
     type: "object",
     properties: {
@@ -25,10 +24,20 @@ const signupSchema = {
     },
     required: ["username", "email", "password"],
     additionalProperties: false
-}
+};
+const signinSchema = {
+    type: "object",
+    properties: {
+        email: { type: "string" },
+        password: { type: "string" }
+    },
+    required: ["email", "password"],
+    additionalProperties: false
+};
 
 
 
 export const ajvValidations = {
     signup: validation(signupSchema),
+    signin: validation(signinSchema),
 }
