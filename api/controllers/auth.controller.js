@@ -2,6 +2,7 @@ import { userMethods } from '../services/user.services.js'
 import bcrypt from "bcrypt";
 import { errorHandler, responseHandler } from '../utils/response.js';
 import jwt from 'jsonwebtoken'
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -35,8 +36,36 @@ export const signin = async (req, res, next) => {
 
         delete user.password;
 
-        responseHandler(res, 201, 'User LoggedIn Successfully', user)
+        responseHandler(res, 201, 'User LoggedIn Successfully', user);
     } catch (error) {
         next(error)
     };
+};
+export const google = async (req, res, next) => {
+    try {
+        const { email, name, googlePhotoUrl } = req.body;
+        let user
+
+        user = await userMethods.read({ email });
+
+        if (!user) {
+            const generatedPassword = uuidv4().replace(/-/g, '').substring(0, 16);
+            const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+            const userData = {
+                username: name,
+                email,
+                password: hashedPassword,
+                profilePicture: googlePhotoUrl
+            };
+            user = await userMethods.create(userData, next);
+        }
+        const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+        res.cookie('Mern_Blog', token, { maxAge: 900000, httpOnly: true });
+
+        delete user.password;
+        responseHandler(res, 201, 'User LoggedIn Successfully', user);
+
+    } catch (error) {
+        next(error)
+    }
 };
