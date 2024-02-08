@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
     "nodemon": "^3.0.3",
+    "react-circular-progressbar": "^2.1.0",
     "uuid": "^9.0.1"
   }
 }
