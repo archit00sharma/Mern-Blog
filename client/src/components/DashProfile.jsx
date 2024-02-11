@@ -66,7 +66,7 @@ export default function DashProfile() {
                 profile
             </h1>
             <form className='flex flex-col gap-4'>
-                <input type="file" accept='image/*' onChange={handleImageChange} ref={filePickerRef} hidden />
+                <input type="file" id='profilePicture' name='profilePicture' accept='image/*' onChange={handleImageChange} ref={filePickerRef} hidden />
                 <div className=" relative w-32 h-32 self-center cursor-pointer shadow-sm overflow-hidden rounded-full" onClick={() => filePickerRef.current.click()}>
                     {imageFileUplaodingProgress && (
                         <CircularProgressbar value={imageFileUplaodingProgress || 0} text={`${imageFileUplaodingProgress}%`} strokeWidth={5} styles={{
@@ -85,9 +85,9 @@ export default function DashProfile() {
                     <img src={imageFileUrl || currentUser?.data?.profilePicture} alt='user' className={` rounded-full w-full h-full object-cover border-8 border-[lightgray] ${imageFileUplaodingProgress && imageFileUplaodingProgress < 100 && 'opacity-60'}`} />
                 </div>
                 {imageFileUploadError && <Alert color='failure'>{imageFileUploadError}</Alert>}
-                <TextInput type='text' id='username' placeholder='username' defaultValue={currentUser.data.username} />
-                <TextInput type='text' id='email' placeholder='email' defaultValue={currentUser.data.email} />
-                <TextInput type='password' id='password' placeholder='password' />
+                <TextInput type='text' name='username' id='username' placeholder='username' defaultValue={currentUser.data.username} />
+                <TextInput type='text' name='email' id='email' placeholder='email' defaultValue={currentUser.data.email} />
+                <TextInput type='password' name='password' id='password' placeholder='password' />
                 <Button type='submit' gradientDuoTone='purpleToBlue' outline>
                     Update
                 </Button>

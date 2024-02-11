@@ -1,11 +1,11 @@
 import express from 'express';
+import { validateToken } from '../helpers/jwt.js'
+import { updateUser } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
 
-router.get('/test',(req,res)=>{
-    res.send("kkkkkkkkkkkkkkkkkkk")
-});
+router.put('/update/:id', validateToken, updateUser)
 
 
 
