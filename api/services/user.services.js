@@ -14,18 +14,26 @@ const read = async (cond, next) => {
     } catch (error) {
         next(error)
     }
-}
+};
 const update = async (id, data, next) => {
     try {
         return await User.findOneAndUpdate({ _id: id }, { $set: data }, { new: true });
     } catch (error) {
         next(error)
     }
-}
+};
+const remove = async (cond, next) => {
+    try {
+        return await User.findOneAndDelete(cond, { new: true });
+    } catch (error) {
+        next(error)
+    }
+};
 
 
 export const userMethods = {
     create,
     read,
-    update
+    update,
+    remove
 }

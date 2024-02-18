@@ -24,3 +24,18 @@ export const updateUser = async (req, res, next) => {
         next(error)
     };
 };
+export const deleteUser = async (req, res, next) => {
+    try {
+
+        const { id } = req.params;
+
+        if (id !== req.user._id) return next(errorHandler('401', 'User Not Found'));
+
+        const user = await userMethods.remove({ _id: id }, next);
+        delete user.password;
+        res.clearCookie('Mern_Blog');
+        responseHandler(res, 201, 'user deleted successfully', user)
+    } catch (error) {
+        next(error)
+    };
+};
