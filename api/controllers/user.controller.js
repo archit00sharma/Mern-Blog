@@ -33,7 +33,6 @@ export const deleteUser = async (req, res, next) => {
 
         const user = await userMethods.remove({ _id: id }, next);
         delete user.password;
-        res.clearCookie('Mern_Blog');
         responseHandler(res, 201, 'user deleted successfully', user)
     } catch (error) {
         next(error)
