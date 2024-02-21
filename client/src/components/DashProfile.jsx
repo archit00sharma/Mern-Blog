@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { app } from '../firebase'
-import { updateStart, updateSuccess, updateError, deleteUserStart, deleteUserSuccess, deleteUserError } from '../redux/user/userSlice'
+import { updateStart, updateSuccess, updateError, deleteUserStart, deleteUserSuccess, deleteUserError, signOutSuccess } from '../redux/user/userSlice'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
 export default function DashProfile() {
-    const { currentUser,error } = useSelector((state) => state.user);
+
+    const { currentUser, error } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({})
     const [imageFile, setImageFile] = useState(null);
     const [imageFileUrl, setImageFileUrl] = useState(null);
@@ -67,7 +68,7 @@ export default function DashProfile() {
             setUpdateUserError(error)
         }
     };
-    const handleDeleteUser = async (e) => {
+    const handleDeleteUser = async () => {
         setShowModal(false);
         try {
             dispatch(deleteUserStart());
@@ -82,6 +83,21 @@ export default function DashProfile() {
             }
         } catch (error) {
             dispatch(deleteUserError(error.message))
+        }
+    };
+    const handleSignOut = async () => {
+        try {
+            const res = await fetch('/api/user/signout', {
+                method: 'POST'
+            })
+            // const data = await res.json();
+            if (!res.ok) {
+                console.log('rrrrrrrrr', res)
+            } else {
+                dispatch(signOutSuccess())
+            }
+        } catch (error) {
+            console.log("error>>>>>>>", error)
         }
     }
 
@@ -159,7 +175,7 @@ export default function DashProfile() {
             </form>
             <div className="text-red-500 flex justify-between mt-5">
                 <span onClick={() => setShowModal(true)} className='cursor-pointer'>Delete Account</span>
-                <span className='cursor-pointer'>Sign Out</span>
+                <span onClick={handleSignOut} className='cursor-pointer'>Sign Out</span>
             </div>
             {updateUserSuccess &&
                 <Alert color='success' className='mt-5'>
@@ -184,7 +200,7 @@ export default function DashProfile() {
                         <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>Are you sure you want to delete</h3>
                         <div className="flex justify-center gap-4">
                             <Button color='failure' onClick={handleDeleteUser}>
-                                Yes, I'm sure
+                                Yes, I am sure
                             </Button>
 
                             <Button color='gray' onClick={() => setShowModal(false)}>

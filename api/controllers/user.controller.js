@@ -38,3 +38,12 @@ export const deleteUser = async (req, res, next) => {
         next(error)
     };
 };
+export const signout = async (req, res, next) => {
+    try {
+
+        res.clearCookie('Mern_Blog');
+        responseHandler(res, 201, 'signed-out successfully', {})
+    } catch (error) {
+        next(error)
+    };
+};

@@ -32,7 +32,7 @@ export const signin = async (req, res, next) => {
         if (!checkPassword) return next(errorHandler(404, 'Invalid Credentials'));
 
         const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-        res.cookie('Mern_Blog', token, { maxAge: 900000, httpOnly: true });
+        res.cookie('Mern_Blog', token, { maxAge: 18000000, httpOnly: true });
 
         delete user.password;
 
